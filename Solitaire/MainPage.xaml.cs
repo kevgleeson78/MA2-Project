@@ -27,7 +27,9 @@ namespace Solitaire
         
         public MainPage()
         {
+         
             this.InitializeComponent();
+          
             addRowsColumns();
             addBorders();
             addPieces();
@@ -85,31 +87,39 @@ namespace Solitaire
 
             }
         }
+        int _Rows = 8;
         private void addPieces()
         {
-            Ellipse ellps;
-            int i;
-
-           
-
-            
-            for (i = 1; i < 8; i++)
+            Ellipse myEl;
+            int iR, iC;
+            // use R&C to name the objects
+            for (iR = 1; iR < _Rows; iR++)
             {
-                
-                    ellps = new Ellipse();
-                    ellps.Name = "piece" + i.ToString();
-                    ellps.Tag = "piece";
-                    ellps.Height = 20;
-                    ellps.Width = 20;
-                    ellps.Fill = new SolidColorBrush(Colors.Violet);
-             
-                    ellps.SetValue(Grid.RowProperty, i); // at the top
-                    ellps.SetValue(Grid.ColumnProperty, i);
-                    
-                    grdGame.Children.Add(ellps);
+                for (iC = 1; iC < _Rows; iC++)
+                {//center square no elipse set for the opening move
+                    if (!((iR < 3 && iC < 3) 
+                        || (iR < 3 && iC > 5) 
+                        || (iR > 5 && iC < 3) 
+                        || (iR > 5 && iC > 5)
+                        ||(iR==4&&iC==4)))
+                    {
+                        myEl = new Ellipse();
+                        myEl.Name = "el_" + iR + "_" + iC;
+                        myEl.Tag = "peices";
+                        myEl.Fill = new SolidColorBrush(Colors.Silver);
+                        myEl.Height = 40;
+                        myEl.Width = 40;
+                        myEl.SetValue(Grid.RowProperty, iR);
+                        myEl.SetValue(Grid.ColumnProperty, iC);
+                       
+
+                        grdGame.Children.Add(myEl);
+                    }
+                   
+                }
                 
             }
-
+            
         }
 
     }
