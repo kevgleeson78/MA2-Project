@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -43,7 +44,7 @@ namespace Solitaire
             }
            
         }
-
+        //Adapted from https://github.com/dcMobileAppsDev/ClassContainers/blob/master/ClassContainers/MainPage.xaml.cs
         private void addBorders()
         {
             int iR, iC;
@@ -88,6 +89,7 @@ namespace Solitaire
             }
         }
         int _Rows = 8;
+        
         private void addPieces()
         {
             Ellipse myEl;
@@ -111,9 +113,11 @@ namespace Solitaire
                         myEl.Width = 40;
                         myEl.SetValue(Grid.RowProperty, iR);
                         myEl.SetValue(Grid.ColumnProperty, iC);
-                       
 
+                        myEl.Tapped += El1_Tapped;
                         grdGame.Children.Add(myEl);
+                        
+
                     }
                    
                 }
@@ -121,6 +125,13 @@ namespace Solitaire
             }
             
         }
+
+        private void El1_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Ellipse current = (Ellipse)sender;
+            Debug.WriteLine(current.Name);
+        }
+        //@todo add tapped event to peices and move them no logic for now
 
     }
   
