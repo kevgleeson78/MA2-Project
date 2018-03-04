@@ -8,6 +8,12 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            
+                <Grid x:Name="grdGame" Background="BurlyWood" Height="500" Width="500">
 
+                </Grid>
+            
+        </StackPanel>
     </Grid>
 </Page>
