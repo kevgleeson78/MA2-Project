@@ -114,7 +114,7 @@ namespace Solitaire
                         myEl.SetValue(Grid.RowProperty, iR);
                         myEl.SetValue(Grid.ColumnProperty, iC);
 
-                        myEl.Tapped += El1_Tapped;
+                        myEl.Tapped += myEl_Tapped;
                         grdGame.Children.Add(myEl);
                         
 
@@ -125,14 +125,43 @@ namespace Solitaire
             }
             
         }
-
-        private void El1_Tapped(object sender, TappedRoutedEventArgs e)
+        Ellipse moveMe;
+        Border possible1;
+         
+        private void myEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            
+            int toR1,toR2,toC1,toC2 = 0;
             Ellipse current = (Ellipse)sender;
             Debug.WriteLine(current.Name);
+            moveMe = current;
+            //current.Fill = new SolidColorBrush(Colors.Blue);
+            // move cats up, mouse down.
+            toR1 = (int)current.GetValue(Grid.RowProperty);
+            toR2 = (int)current.GetValue(Grid.RowProperty) -1;
+
+            // find the squares below this and to the left/rigth
+            // toR++;
+            // Debug.WriteLine(toR);
+
+
+            toC1 = (int)current.GetValue(Grid.ColumnProperty)+1;
+            toC2 = (int)current.GetValue(Grid.ColumnProperty) - 1;
+            //Print out rows and coloums one above and below, one to left and right.
+            Debug.WriteLine("Move row 1 : "+toR1+" Move row 2: "+toR2+" MOve col 1: "+toC1+" MOve col2: "+toC2);
+
+          possible1 = new Border();
+            possible1.SetValue(Grid.RowProperty, toR1);
+            possible1.SetValue(Grid.ColumnProperty, toC1);
+            possible1.Background = new SolidColorBrush(Colors.Gold);
+            
+            grdGame.Children.Add(possible1);
         }
+
+       
+
         //@todo add tapped event to peices and move them no logic for now
 
     }
-  
+
 }
