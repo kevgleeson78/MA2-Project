@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,30 +26,36 @@ namespace Solitaire
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        
+
         public MainPage()
         {
-         
+
             this.InitializeComponent();
-          
-            addRowsColumns();
+
             addBorders();
             addPieces();
+          
+            addRowsColumns();
+
+            
         }
         private void addRowsColumns()
         {
             for (int i = 0; i < 9; i++)
             {
+               
                 grdGame.ColumnDefinitions.Add(new ColumnDefinition());
                 grdGame.RowDefinitions.Add(new RowDefinition());
             }
-           
+
         }
+        Border brdr;
         //Adapted from https://github.com/dcMobileAppsDev/ClassContainers/blob/master/ClassContainers/MainPage.xaml.cs
         private void addBorders()
         {
+
             int iR, iC;
-            Border brdr;
+
             //iR set to 1 to center the board in front of the background
             for (iR = 1; iR < 8; iR++)
             {//iC set to 1 to center board
@@ -56,112 +63,129 @@ namespace Solitaire
                 {
                     brdr = new Border();
                     //name for getting the position of the peices on the board.
-                    brdr.Name = "square_" + iR.ToString() + "_" + iC.ToString();
+                    brdr.Name = iR.ToString() + "_" + iC.ToString();
+                    
                     //set default colour of border to balck
                     brdr.Background = new SolidColorBrush(Colors.Black);
-                    
+
                     // if modulus of iR + iC is 0, then make the square white
                     if ((iR + iC) % 2 == 0)
                     {
                         brdr.Background = new SolidColorBrush(Colors.White);
-                       
+
                     }
                     //remove the squares that are not needed for the game
                     //colour these squares the same colour as the grid background
                     //@todo need to make these references in the grid non playable.
-                    if ((iR<3&&iC <3)||(iR <3  && iC > 5)|| (iR >5 && iC < 3) || (iR >5 && iC > 5))
+                    if ((iR < 3 && iC < 3) || (iR < 3 && iC > 5) || (iR > 5 && iC < 3) || (iR > 5 && iC > 5))
                     {
                         brdr.Background = new SolidColorBrush(Colors.BurlyWood);
                     }
-                    brdr.SetValue(Grid.RowProperty, iR);
-                    brdr.SetValue(Grid.ColumnProperty, iC);
+                    brdr.SetValue(Windows.UI.Xaml.Controls.Grid.RowProperty, iR);
+                    brdr.SetValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty, iC);
                     brdr.HorizontalAlignment = HorizontalAlignment.Center;
                     brdr.VerticalAlignment = VerticalAlignment.Center;
                     //@todo set height and width of squares not hard coded.
                     brdr.Height = 100;
                     brdr.Width = 100;
-                  //add squares to the board.
-                    grdGame.Children.Add(brdr);
+                    //add squares to the board.
 
+                    grdGame.Children.Add(brdr);
+                    
 
                 }
-
+               
             }
+            
         }
-        int _Rows = 8;
+
+
+
+
+        UIElement[,] grid;
+        Ellipse myEl;
         
         private void addPieces()
         {
-            Ellipse myEl;
+           
+            myEl = new Ellipse();
             int iR, iC;
-            // use R&C to name the objects
-            for (iR = 1; iR < _Rows; iR++)
+            // loop rows 
+            UIElement[,] grid = new UIElement[9, 9] {
+            {null,null,null,null,null,null,null,null,null},
+            {null,null,null,myEl,myEl,myEl,null,null,null},
+            {null,null,null,myEl,myEl,myEl,null,null,null},
+            {null,myEl,myEl,myEl,myEl,myEl,myEl,myEl,null},
+            {null,myEl,myEl,myEl,null,myEl,myEl,myEl,null},
+            {null,myEl,myEl,myEl,myEl,myEl,myEl,myEl,null},
+            {null,null,null,myEl,myEl,myEl,null,null,null},
+            {null,null,null,myEl,myEl,myEl,null,null,null},
+            {null,null,null,null,null,null,null,null,null},
+        };
+
+            for (int i = 0; i < 9; i++)
             {
-                for (iC = 1; iC < _Rows; iC++)
-                {//center square no elipse set for the opening move
-                    if (!((iR < 3 && iC < 3) 
-                        || (iR < 3 && iC > 5) 
-                        || (iR > 5 && iC < 3) 
-                        || (iR > 5 && iC > 5)
-                        ||(iR==4&&iC==4)))
+                for (int j = 0; j < 9; j++)
+                {
+                    if (grid[i, j] != null)
                     {
                         myEl = new Ellipse();
-                        myEl.Name = "el_" + iR + "_" + iC;
-                        myEl.Tag = "peices";
                         myEl.Fill = new SolidColorBrush(Colors.Silver);
+                        myEl.Name = i + "_" + j;
+                        myEl.Tag = "peices";
                         myEl.Height = 40;
                         myEl.Width = 40;
-                        myEl.SetValue(Grid.RowProperty, iR);
-                        myEl.SetValue(Grid.ColumnProperty, iC);
+                        grid[i, j] = myEl;
+           
+                        grid[i, j].SetValue(Windows.UI.Xaml.Controls.Grid.RowProperty, i);
+                        grid[i, j].SetValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty, j);
 
-                        myEl.Tapped += myEl_Tapped;
-                        grdGame.Children.Add(myEl);
-                        
-
+                        grdGame.Children.Add(grid[i, j]);
+                        grid[i, j].Tapped += myEl_Tapped;
+                       
                     }
                    
+                    
+                    //Debug.WriteLine(grid[i, j]);
                 }
-                
             }
+                
+                    
+                    
+                
+                
             
+           
         }
-        Ellipse moveMe;
-        Border possible1;
-         
+
+        
+
         private void myEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
+
+           
+            Ellipse moveMe;
             
-            int toR1,toR2,toC1,toC2 = 0;
+            int toR1, toC1, brdr1;
             Ellipse current = (Ellipse)sender;
-            Debug.WriteLine(current.Name);
+
+           
             moveMe = current;
-            //current.Fill = new SolidColorBrush(Colors.Blue);
-            // move cats up, mouse down.
-            toR1 = (int)current.GetValue(Grid.RowProperty);
-            toR2 = (int)current.GetValue(Grid.RowProperty) -1;
+           
 
-            // find the squares below this and to the left/rigth
-            // toR++;
-            // Debug.WriteLine(toR);
+            toR1 = (int)current.GetValue(Windows.UI.Xaml.Controls.Grid.RowProperty);
+           
 
+            toC1 = (int)current.GetValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty);
+            brdr1 = (int)brdr.GetValue(Windows.UI.Xaml.Controls.Grid.RowProperty);
 
-            toC1 = (int)current.GetValue(Grid.ColumnProperty)+1;
-            toC2 = (int)current.GetValue(Grid.ColumnProperty) - 1;
-            //Print out rows and coloums one above and below, one to left and right.
-            Debug.WriteLine("Move row 1 : "+toR1+" Move row 2: "+toR2+" MOve col 1: "+toC1+" MOve col2: "+toC2);
-
-          possible1 = new Border();
-            possible1.SetValue(Grid.RowProperty, toR1);
-            possible1.SetValue(Grid.ColumnProperty, toC1);
-            possible1.Background = new SolidColorBrush(Colors.Gold);
+          
+            moveMe.SetValue(Windows.UI.Xaml.Controls.Grid.RowProperty, toR1 + 1);
+            moveMe.SetValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty, toC1 + 1);
             
-            grdGame.Children.Add(possible1);
+            
+
+            }
         }
-
-       
-
-        //@todo add tapped event to peices and move them no logic for now
-
-    }
-
+    //@todo add tapped event to peices and move them no logic for now
 }
