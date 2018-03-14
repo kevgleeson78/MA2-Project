@@ -100,18 +100,10 @@ namespace Solitaire
         }
 
 
-
-
-        UIElement[,] grid;
-        Ellipse myEl;
-        
-        private void addPieces()
+        private UIElement[,] InitialPeices()
         {
-           
-            myEl = new Ellipse();
-            int iR, iC;
             // loop rows 
-            UIElement[,] grid = new UIElement[9, 9] {
+            return new UIElement[9, 9] {
             {null,null,null,null,null,null,null,null,null},
             {null,null,null,myEl,myEl,myEl,null,null,null},
             {null,null,null,myEl,myEl,myEl,null,null,null},
@@ -122,6 +114,18 @@ namespace Solitaire
             {null,null,null,myEl,myEl,myEl,null,null,null},
             {null,null,null,null,null,null,null,null,null},
         };
+        }
+
+
+
+        Ellipse myEl;
+        UIElement[,] grid;
+        private void addPieces()
+        {
+
+            myEl = new Ellipse();
+
+         grid = InitialPeices();
 
             for (int i = 0; i < 9; i++)
             {
@@ -136,56 +140,89 @@ namespace Solitaire
                         myEl.Height = 40;
                         myEl.Width = 40;
                         grid[i, j] = myEl;
-           
+
                         grid[i, j].SetValue(Windows.UI.Xaml.Controls.Grid.RowProperty, i);
                         grid[i, j].SetValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty, j);
 
                         grdGame.Children.Add(grid[i, j]);
                         grid[i, j].Tapped += myEl_Tapped;
-                       
+
                     }
-                   
-                    
-                    //Debug.WriteLine(grid[i, j]);
+
+
                 }
             }
-                
-                    
-                    
-                
-                
-            
-           
+
         }
 
-        
+
+
+
 
         private void myEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
 
-           
+            grid = InitialPeices();
             Ellipse moveMe;
             
             int toR1, toC1, brdr1;
             Ellipse current = (Ellipse)sender;
-
            
+
+
             moveMe = current;
            
 
-            toR1 = (int)current.GetValue(Windows.UI.Xaml.Controls.Grid.RowProperty);
-           
+            toR1 = (int)moveMe.GetValue(Grid.RowProperty);
+            Debug.WriteLine(toR1);
 
-            toC1 = (int)current.GetValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty);
-            brdr1 = (int)brdr.GetValue(Windows.UI.Xaml.Controls.Grid.RowProperty);
+            toC1 = (int)moveMe.GetValue(Grid.ColumnProperty);
 
-          
-            moveMe.SetValue(Windows.UI.Xaml.Controls.Grid.RowProperty, toR1 + 1);
-            moveMe.SetValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty, toC1 + 1);
-            
-            
+            brdr1 = (int)brdr.GetValue(Grid.RowProperty);
+            if(grid[toC1, toR1+1]!=null&& grid[toC1, toR1+2] == null)
+            {
+                
+                UIElement[,] grid = new UIElement[9, 9];
+                grid[toC1, toR1 + 1] = null;
+                moveMe.SetValue(Grid.RowProperty, toR1+2);
+                moveMe.SetValue(Grid.ColumnProperty, toC1);
+                
 
+                
+
+               for (int i = 0; i < 9; i++)
+               {
+                   for (int j = 0; j < 9; j++)
+                   {
+                       if (grid[i, j] != null)
+                       {
+                           myEl = new Ellipse();
+                           myEl.Fill = new SolidColorBrush(Colors.Silver);
+                           myEl.Name = i + "_" + j;
+                            myEl.Tag = "peices";
+                            myEl.Height = 40;
+                            myEl.Width = 40;
+                            grid[i, j] = myEl;
+
+                            grid[i, j].SetValue(Grid.RowProperty, i);
+                            grid[i, j].SetValue(Grid.ColumnProperty, j);
+
+                            grdGame.Children.Add(grid[i, j]);
+
+
+                        }
+
+
+                    }
+                }
             }
+            
+           
+            // 
+
+
+
+        }
         }
     //@todo add tapped event to peices and move them no logic for now
 }
