@@ -31,19 +31,21 @@ namespace Solitaire
         {
 
             this.InitializeComponent();
-
             addBorders();
-            addPieces();
-          
             addRowsColumns();
+            addPieces();
 
-            
+
+
+
+
+
         }
         private void addRowsColumns()
         {
             for (int i = 0; i < 9; i++)
             {
-               
+
                 grdGame.ColumnDefinitions.Add(new ColumnDefinition());
                 grdGame.RowDefinitions.Add(new RowDefinition());
             }
@@ -64,7 +66,7 @@ namespace Solitaire
                     brdr = new Border();
                     //name for getting the position of the peices on the board.
                     brdr.Name = iR.ToString() + "_" + iC.ToString();
-                    
+
                     //set default colour of border to balck
                     brdr.Background = new SolidColorBrush(Colors.Black);
 
@@ -91,19 +93,17 @@ namespace Solitaire
                     //add squares to the board.
 
                     grdGame.Children.Add(brdr);
-                    
+
 
                 }
-               
+
             }
-            
+
         }
 
-
-        private UIElement[,] InitialPeices()
-        {
+        UIElement[,] InitialPeices() =>
             // loop rows 
-            return new UIElement[9, 9] {
+            new UIElement[9, 9] {
             {null,null,null,null,null,null,null,null,null},
             {null,null,null,myEl,myEl,myEl,null,null,null},
             {null,null,null,myEl,myEl,myEl,null,null,null},
@@ -113,19 +113,16 @@ namespace Solitaire
             {null,null,null,myEl,myEl,myEl,null,null,null},
             {null,null,null,myEl,myEl,myEl,null,null,null},
             {null,null,null,null,null,null,null,null,null},
-        };
-        }
-
+            };
 
 
         Ellipse myEl;
         UIElement[,] grid;
         private void addPieces()
         {
-
             myEl = new Ellipse();
 
-         grid = InitialPeices();
+            grid = InitialPeices();
 
             for (int i = 0; i < 9; i++)
             {
@@ -133,96 +130,51 @@ namespace Solitaire
                 {
                     if (grid[i, j] != null)
                     {
-                        myEl = new Ellipse();
-                        myEl.Fill = new SolidColorBrush(Colors.Silver);
-                        myEl.Name = i + "_" + j;
-                        myEl.Tag = "peices";
-                        myEl.Height = 40;
-                        myEl.Width = 40;
+                        myEl = new Ellipse
+                        {
+                            Fill = new SolidColorBrush(Colors.Silver),
+                            Name = i + "_" + j,
+                            Tag = "peices",
+                            Height = 40,
+                            Width = 40
+                        };
                         grid[i, j] = myEl;
 
-                        grid[i, j].SetValue(Windows.UI.Xaml.Controls.Grid.RowProperty, i);
-                        grid[i, j].SetValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty, j);
+                        grid[i, j].SetValue(Grid.RowProperty, i);
+                        grid[i, j].SetValue(Grid.ColumnProperty, j);
 
                         grdGame.Children.Add(grid[i, j]);
                         grid[i, j].Tapped += myEl_Tapped;
 
                     }
-
-
                 }
             }
-
         }
-
-
-
-
 
         private void myEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
-            grid = InitialPeices();
+ 
             Ellipse moveMe;
-            
+
             int toR1, toC1, brdr1;
             Ellipse current = (Ellipse)sender;
-           
-
-
             moveMe = current;
-           
 
             toR1 = (int)moveMe.GetValue(Grid.RowProperty);
-            Debug.WriteLine(toR1);
-
+            Debug.WriteLine(current.Name);
             toC1 = (int)moveMe.GetValue(Grid.ColumnProperty);
-
-            brdr1 = (int)brdr.GetValue(Grid.RowProperty);
-            if(grid[toC1, toR1+1]!=null&& grid[toC1, toR1+2] == null)
-            {
-                
-                UIElement[,] grid = new UIElement[9, 9];
-                grid[toC1, toR1 + 1] = null;
-                moveMe.SetValue(Grid.RowProperty, toR1+2);
-                moveMe.SetValue(Grid.ColumnProperty, toC1);
-                
-
-                
-
-               for (int i = 0; i < 9; i++)
-               {
-                   for (int j = 0; j < 9; j++)
-                   {
-                       if (grid[i, j] != null)
-                       {
-                           myEl = new Ellipse();
-                           myEl.Fill = new SolidColorBrush(Colors.Silver);
-                           myEl.Name = i + "_" + j;
-                            myEl.Tag = "peices";
-                            myEl.Height = 40;
-                            myEl.Width = 40;
-                            grid[i, j] = myEl;
-
-                            grid[i, j].SetValue(Grid.RowProperty, i);
-                            grid[i, j].SetValue(Grid.ColumnProperty, j);
-
-                            grdGame.Children.Add(grid[i, j]);
-
-
-                        }
-
-
-                    }
-                }
-            }
+            String removeMe = (toR1 + 1) + "_" + toC1;
             
-           
-            // 
-
-
-
+            if (grid[toC1, toR1 + 1] != null && grid[toC1, toR1 + 2] == null)
+            {
+                //grid = new UIElement[9, 9];
+                moveMe.SetValue(Grid.RowProperty, toR1 + 2);
+                moveMe.SetValue(Grid.ColumnProperty, toC1);
+                myEl = (Ellipse)grid[toR1+1,toC1];
+                grdGame.Children.Remove(myEl);
+            }
         }
-        }
+    }
+
     //@todo add tapped event to peices and move them no logic for now
 }
