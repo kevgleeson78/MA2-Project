@@ -35,17 +35,13 @@ namespace Solitaire
             addRowsColumns();
             addPieces();
 
-
-
-
-
-
         }
         private void addRowsColumns()
         {
             for (int i = 0; i < 9; i++)
             {
-
+                grdPieces.ColumnDefinitions.Add(new ColumnDefinition());
+                grdPieces.RowDefinitions.Add(new RowDefinition());
                 grdGame.ColumnDefinitions.Add(new ColumnDefinition());
                 grdGame.RowDefinitions.Add(new RowDefinition());
             }
@@ -83,8 +79,8 @@ namespace Solitaire
                     {
                         brdr.Background = new SolidColorBrush(Colors.BurlyWood);
                     }
-                    brdr.SetValue(Windows.UI.Xaml.Controls.Grid.RowProperty, iR);
-                    brdr.SetValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty, iC);
+                    brdr.SetValue(Grid.RowProperty, iR);
+                    brdr.SetValue(Grid.ColumnProperty, iC);
                     brdr.HorizontalAlignment = HorizontalAlignment.Center;
                     brdr.VerticalAlignment = VerticalAlignment.Center;
                     //@todo set height and width of squares not hard coded.
@@ -135,28 +131,29 @@ namespace Solitaire
                             Fill = new SolidColorBrush(Colors.Silver),
                             Name = i + "_" + j,
                             Tag = "peices",
-                            Height = 40,
-                            Width = 40
+                            Height = 50,
+                            Width = 50
                         };
                         grid[i, j] = myEl;
 
                         grid[i, j].SetValue(Grid.RowProperty, i);
                         grid[i, j].SetValue(Grid.ColumnProperty, j);
 
-                        grdGame.Children.Add(grid[i, j]);
+                        grdPieces.Children.Add(grid[i, j]);
                         grid[i, j].Tapped += myEl_Tapped;
 
                     }
                 }
             }
         }
-
+        Ellipse moveMe;
+        Border possible1;
         private void myEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
- 
-            Ellipse moveMe;
+             
 
-            int toR1, toC1, brdr1;
+
+            int toR1, toC1;
             Ellipse current = (Ellipse)sender;
             moveMe = current;
 
@@ -164,17 +161,63 @@ namespace Solitaire
             Debug.WriteLine(current.Name);
             toC1 = (int)moveMe.GetValue(Grid.ColumnProperty);
             String removeMe = (toR1 + 1) + "_" + toC1;
-            
+            //@todo set condition for the four possible moves
+            //set boudries for edge of board.
             if (grid[toC1, toR1 + 1] != null && grid[toC1, toR1 + 2] == null)
-            {
-                //grid = new UIElement[9, 9];
-                moveMe.SetValue(Grid.RowProperty, toR1 + 2);
-                moveMe.SetValue(Grid.ColumnProperty, toC1);
-                myEl = (Ellipse)grid[toR1+1,toC1];
-                grdGame.Children.Remove(myEl);
+            { ////grid = new UIElement[9, 9];
+                HighlightBorder(toR1, toC1);
+               
+              
+
             }
+
+        }
+
+        private void HighlightBorder(int toR1, int toC1)
+        {
+            //grdGame.Children.Remove(myEl);
+            brdr = new Border();
+            //name for getting the position of the peices on the board.
+            brdr.Background = new SolidColorBrush(Colors.Red);
+            brdr.SetValue(Grid.RowProperty, toR1 + 2);
+            brdr.SetValue(Grid.ColumnProperty, toC1);
+            brdr.HorizontalAlignment = HorizontalAlignment.Center;
+            brdr.VerticalAlignment = VerticalAlignment.Center;
+            //@todo set height and width of squares not hard coded.
+            brdr.Height = 100;
+            brdr.Width = 100;
+            //add squares to the board.
+
+            grdGame.Children.Add(brdr);
+            brdr.Tag = "valid";
+            brdr.Tapped += Brdr_Tapped;
+            possible1 = brdr;
+        }
+
+        private void Brdr_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Border current = (Border)sender;
+
+            int toR1, toC1;
+            toR1 = (int)moveMe.GetValue(Grid.RowProperty);
+            
+            toC1 = (int)moveMe.GetValue(Grid.ColumnProperty);
+            moveMe.SetValue(Grid.RowProperty, toR1 + 2);
+            moveMe.SetValue(Grid.ColumnProperty, toC1);
+            moveMe.Name = toR1 + 2 + "_" + toC1;
+            myEl = (Ellipse)grid[toR1 + 1, toC1];
+
+
+            grdPieces.Children.Remove(myEl);
+            possible1.Tapped -= Brdr_Tapped;
+            possible1.Background = new SolidColorBrush(Colors.White);
+          var new1 =   grid[toC1, toR1 + 1] = null;
+          var new2 =  grid[toC1, toR1 + 2] != null;
+            
+            Debug.WriteLine("BorderTApped.");
         }
     }
+    
 
     //@todo add tapped event to peices and move them no logic for now
 }

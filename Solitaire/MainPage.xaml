@@ -7,13 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="grdRoot"  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="grdRoot"  Background="DarkBlue">
 
 
-        <Grid x:Name="grdGame">
-
-
-
-        </Grid>
+        <Grid x:Name="grdGame" MaxHeight="800" MaxWidth="800" />
+        <Grid x:Name="grdPieces"  MaxHeight="800" MaxWidth="800" />
     </Grid>
 </Page>
