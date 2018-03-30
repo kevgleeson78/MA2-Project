@@ -10,7 +10,7 @@
     <Grid x:Name="grdRoot"  Background="DarkBlue">
 
 
-        <Grid x:Name="grdGame" MaxHeight="800" MaxWidth="800" />
-        <Grid x:Name="grdPieces"  MaxHeight="800" MaxWidth="800" />
+        <Grid x:Name="grdGame"  />
+        <Grid x:Name="grdPieces"   />
     </Grid>
 </Page>

@@ -38,10 +38,14 @@ namespace Solitaire
         }
         private void addRowsColumns()
         {
-            for (int i = 0; i < 9; i++)
+           
+            
+            for (int i = 0; i < 7; i++)
             {
+
                 grdPieces.ColumnDefinitions.Add(new ColumnDefinition());
                 grdPieces.RowDefinitions.Add(new RowDefinition());
+
                 grdGame.ColumnDefinitions.Add(new ColumnDefinition());
                 grdGame.RowDefinitions.Add(new RowDefinition());
             }
@@ -55,9 +59,9 @@ namespace Solitaire
             int iR, iC;
 
             //iR set to 1 to center the board in front of the background
-            for (iR = 1; iR < 8; iR++)
+            for (iR = 0; iR < 7; iR++)
             {//iC set to 1 to center board
-                for (iC = 1; iC < 8; iC++)
+                for (iC = 0; iC < 7; iC++)
                 {
                     brdr = new Border();
                     //name for getting the position of the peices on the board.
@@ -75,10 +79,10 @@ namespace Solitaire
                     //remove the squares that are not needed for the game
                     //colour these squares the same colour as the grid background
                     //@todo need to make these references in the grid non playable.
-                    if ((iR < 3 && iC < 3) || (iR < 3 && iC > 5) || (iR > 5 && iC < 3) || (iR > 5 && iC > 5))
+                   /* if ((iR < 3 && iC < 3) || (iR < 3 && iC > 5) || (iR > 5 && iC < 3) || (iR > 5 && iC > 5))
                     {
                         brdr.Background = new SolidColorBrush(Colors.BurlyWood);
-                    }
+                    }*/
                     brdr.SetValue(Grid.RowProperty, iR);
                     brdr.SetValue(Grid.ColumnProperty, iC);
                     brdr.HorizontalAlignment = HorizontalAlignment.Center;
@@ -99,16 +103,16 @@ namespace Solitaire
 
         UIElement[,] InitialPeices() =>
             // loop rows 
-            new UIElement[9, 9] {
-            {null,null,null,null,null,null,null,null,null},
-            {null,null,null,myEl,myEl,myEl,null,null,null},
-            {null,null,null,myEl,myEl,myEl,null,null,null},
-            {null,myEl,myEl,myEl,myEl,myEl,myEl,myEl,null},
-            {null,myEl,myEl,myEl,null,myEl,myEl,myEl,null},
-            {null,myEl,myEl,myEl,myEl,myEl,myEl,myEl,null},
-            {null,null,null,myEl,myEl,myEl,null,null,null},
-            {null,null,null,myEl,myEl,myEl,null,null,null},
-            {null,null,null,null,null,null,null,null,null},
+            new UIElement[7, 7] {
+
+            {null,null,myEl,myEl,myEl,null,null},
+            {null,null,myEl,myEl,myEl,null,null},
+            {myEl,myEl,myEl,myEl,myEl,myEl,myEl},
+            {myEl,myEl,myEl,null,myEl,myEl,myEl},
+            {myEl,myEl,myEl,myEl,myEl,myEl,myEl},
+            {null,null,myEl,myEl,myEl,null,null},
+            {null,null,myEl,myEl,myEl,null,null},
+           
             };
 
 
@@ -120,9 +124,9 @@ namespace Solitaire
 
             grid = InitialPeices();
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 7; i++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < 7; j++)
                 {
                     if (grid[i, j] != null)
                     {
@@ -206,15 +210,17 @@ namespace Solitaire
             moveMe.SetValue(Grid.ColumnProperty, toC1);
             moveMe.Name = toR1 + 2 + "_" + toC1;
             myEl = (Ellipse)grid[toR1 + 1, toC1];
-
+            
 
             grdPieces.Children.Remove(myEl);
             possible1.Tapped -= Brdr_Tapped;
-            possible1.Background = new SolidColorBrush(Colors.White);
-          var new1 =   grid[toC1, toR1 + 1] = null;
-          var new2 =  grid[toC1, toR1 + 2] != null;
+            grid[toC1, toR1 + 1] = null;
+           // grid[toC1, toR1 + 2] = myEl;
+            grid[toC1, toR1] = null;
             
-            Debug.WriteLine("BorderTApped.");
+            //possible1.Background = new SolidColorBrush(Colors.White);
+          
+            Debug.WriteLine(grdPieces.Children.Count);
         }
     }
     
