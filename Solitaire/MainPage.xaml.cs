@@ -151,7 +151,7 @@ namespace Solitaire
             }
         }
         Ellipse moveMe;
-        Border possible1;
+        Border possible1,possible2;
         int toR1, toC1;
         private void myEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -185,49 +185,68 @@ namespace Solitaire
         private void HighlightBorder(int row, int col)
         {
             //grdGame.Children.Remove(myEl);
-            brdr = new Border();
+            possible1 = new Border();
             //name for getting the position of the peices on the board.
-            brdr.Background = new SolidColorBrush(Colors.Red);
+            possible1.Background = new SolidColorBrush(Colors.Red);
             
-            brdr.SetValue(Grid.RowProperty, row + 2);
-            brdr.SetValue(Grid.ColumnProperty, col);
-            brdr.HorizontalAlignment = HorizontalAlignment.Center;
-            brdr.VerticalAlignment = VerticalAlignment.Center;
+            possible1.SetValue(Grid.RowProperty, row + 2);
+            possible1.SetValue(Grid.ColumnProperty, col);
+            possible1.HorizontalAlignment = HorizontalAlignment.Center;
+            possible1.VerticalAlignment = VerticalAlignment.Center;
             //@todo set height and width of squares not hard coded.
-            brdr.Height = 100;
-            brdr.Width = 100;
+            possible1.Height = 100;
+            possible1.Width = 100;
+            //add squares to the board.
+           
+            grdGame.Children.Add(possible1);
+            
+            possible1.Tapped += Brdr_Tapped;
+            //grdGame.Children.Remove(myEl);
+            possible2 = new Border();
+            //name for getting the position of the peices on the board.
+            possible2.Background = new SolidColorBrush(Colors.Red);
+
+            possible2.SetValue(Grid.RowProperty, row);
+            possible2.SetValue(Grid.ColumnProperty, col-2);
+            possible2.HorizontalAlignment = HorizontalAlignment.Center;
+            possible2.VerticalAlignment = VerticalAlignment.Center;
+            //@todo set height and width of squares not hard coded.
+            possible2.Height = 100;
+            possible2.Width = 100;
             //add squares to the board.
 
-            grdGame.Children.Add(brdr);
-            brdr.Tag = "valid";
-            brdr.Tapped += Brdr_Tapped;
-            possible1 = brdr;
+            grdGame.Children.Add(possible2);
+
+            possible2.Tapped += Brdr_Tapped;
+
+
         }
 
         private void Brdr_Tapped(object sender, TappedRoutedEventArgs e)
         {
             Border current = (Border)sender;
 
-            possible1 = current;
+            
             toR1 = (int)moveMe.GetValue(Grid.RowProperty);
             
             toC1 = (int)moveMe.GetValue(Grid.ColumnProperty);
-            moveMe.SetValue(Grid.RowProperty, toR1 + 2);
-            moveMe.SetValue(Grid.ColumnProperty, toC1);
+            moveMe.SetValue(Grid.RowProperty, toR1);
+            moveMe.SetValue(Grid.ColumnProperty, toC1-2);
             moveMe.Name = toR1 + 2 + "_" + toC1;
             myEl = (Ellipse)grid[toR1 + 1, toC1];
             
 
             grdPieces.Children.Remove(myEl);
            
-            possible1.Tapped -= Brdr_Tapped;
+           
             grdGame.Children.Remove(possible1);
+            grdGame.Children.Remove(possible2);
             grid[toC1, toR1 + 1] = null;
            // grid[toC1, toR1 + 2] = myEl;
             grid[toC1, toR1] = null;
-            
+
             //possible1.Background = new SolidColorBrush(Colors.White);
-          
+            possible1.Tapped -= Brdr_Tapped;
             Debug.WriteLine(grdPieces.Children.Count);
         }
     }
