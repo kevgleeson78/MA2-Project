@@ -152,12 +152,13 @@ namespace Solitaire
         }
         Ellipse moveMe;
         Border possible1;
+        int toR1, toC1;
         private void myEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
              
 
 
-            int toR1, toC1;
+           
             Ellipse current = (Ellipse)sender;
             moveMe = current;
 
@@ -167,24 +168,27 @@ namespace Solitaire
             String removeMe = (toR1 + 1) + "_" + toC1;
             //@todo set condition for the four possible moves
             //set boudries for edge of board.
-            if (grid[toC1, toR1 + 1] != null && grid[toC1, toR1 + 2] == null)
+            
+
+           //boundry set to check bounds of bottom of the board
+            if (toR1+2 <7 && grid[toC1, toR1 + 1] != null && grid[toC1, toR1 + 2] == null)
             { ////grid = new UIElement[9, 9];
                 HighlightBorder(toR1, toC1);
-               
               
-
             }
+            
 
         }
 
-        private void HighlightBorder(int toR1, int toC1)
+        private void HighlightBorder(int row, int col)
         {
             //grdGame.Children.Remove(myEl);
             brdr = new Border();
             //name for getting the position of the peices on the board.
             brdr.Background = new SolidColorBrush(Colors.Red);
-            brdr.SetValue(Grid.RowProperty, toR1 + 2);
-            brdr.SetValue(Grid.ColumnProperty, toC1);
+            
+            brdr.SetValue(Grid.RowProperty, row + 2);
+            brdr.SetValue(Grid.ColumnProperty, col);
             brdr.HorizontalAlignment = HorizontalAlignment.Center;
             brdr.VerticalAlignment = VerticalAlignment.Center;
             //@todo set height and width of squares not hard coded.
@@ -202,7 +206,7 @@ namespace Solitaire
         {
             Border current = (Border)sender;
 
-            int toR1, toC1;
+            
             toR1 = (int)moveMe.GetValue(Grid.RowProperty);
             
             toC1 = (int)moveMe.GetValue(Grid.ColumnProperty);
@@ -213,6 +217,7 @@ namespace Solitaire
             
 
             grdPieces.Children.Remove(myEl);
+            grdGame.Children.Remove(brdr);
             possible1.Tapped -= Brdr_Tapped;
             grid[toC1, toR1 + 1] = null;
            // grid[toC1, toR1 + 2] = myEl;
