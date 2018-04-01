@@ -170,11 +170,13 @@ namespace Solitaire
             //set boudries for edge of board.
             
 
-           //boundry set to check bounds of bottom of the board
+           
             if (toR1+2 <7 && grid[toC1, toR1 + 1] != null && grid[toC1, toR1 + 2] == null)
             { ////grid = new UIElement[9, 9];
                 HighlightBorder(toR1, toC1);
               
+
+
             }
             
 
@@ -206,7 +208,7 @@ namespace Solitaire
         {
             Border current = (Border)sender;
 
-            
+            possible1 = current;
             toR1 = (int)moveMe.GetValue(Grid.RowProperty);
             
             toC1 = (int)moveMe.GetValue(Grid.ColumnProperty);
@@ -217,8 +219,9 @@ namespace Solitaire
             
 
             grdPieces.Children.Remove(myEl);
-            grdGame.Children.Remove(brdr);
+           
             possible1.Tapped -= Brdr_Tapped;
+            grdGame.Children.Remove(possible1);
             grid[toC1, toR1 + 1] = null;
            // grid[toC1, toR1 + 2] = myEl;
             grid[toC1, toR1] = null;
