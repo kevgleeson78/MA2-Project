@@ -173,31 +173,60 @@ namespace Solitaire
 
             possible1 = new Border();
             //name for getting the position of the peices on the board.
-           
 
-            if (grid[toR1+2, toC1].Equals(brdr))
-            { ////grid = new UIElement[9, 9];
+            if (toR1 + 2 < 7)
+            {
+                if (grid[toR1 + 2, toC1].Equals(brdr) && !grid[toR1 + 1, toC1].Equals(brdr))
+                { ////grid = new UIElement[9, 9];
 
-                possible1.Background = new SolidColorBrush(Colors.Red);
+                    possible1.Background = new SolidColorBrush(Colors.Red);
 
-                possible1.SetValue(Grid.RowProperty, toR1 + 2);
-                possible1.SetValue(Grid.ColumnProperty, toC1);
-               
+                    possible1.SetValue(Grid.RowProperty, toR1 + 2);
+                    possible1.SetValue(Grid.ColumnProperty, toC1);
+                    possible1.HorizontalAlignment = HorizontalAlignment.Center;
+                    possible1.VerticalAlignment = VerticalAlignment.Center;
+                    //@todo set height and width of squares not hard coded.
+                    possible1.Height = 100;
+                    possible1.Width = 100;
+                    possible1.Name = "possible1";
+
+                    grdGame.Children.Add(possible1);
+
+                    possible1.Tapped += Brdr_Tapped;
 
 
 
+                }
             }
 
-            possible1.HorizontalAlignment = HorizontalAlignment.Center;
-            possible1.VerticalAlignment = VerticalAlignment.Center;
-            //@todo set height and width of squares not hard coded.
-            possible1.Height = 100;
-            possible1.Width = 100;
-            possible1.Name = "possible1";
+            possible2 = new Border();
+            //name for getting the position of the peices on the board.
 
-            grdGame.Children.Add(possible1);
+            if (toR1 - 2 > 0)
+            {
+                if (grid[toR1 - 2, toC1].Equals(brdr) && !grid[toR1 - 1, toC1].Equals(brdr))
+                { ////grid = new UIElement[9, 9];
 
-            possible1.Tapped += Brdr_Tapped;
+                    possible2.Background = new SolidColorBrush(Colors.Red);
+
+                    possible2.SetValue(Grid.RowProperty, toR1 - 2);
+                    possible2.SetValue(Grid.ColumnProperty, toC1);
+                    possible2.HorizontalAlignment = HorizontalAlignment.Center;
+                    possible2.VerticalAlignment = VerticalAlignment.Center;
+                    //@todo set height and width of squares not hard coded.
+                    possible2.Height = 100;
+                    possible2.Width = 100;
+                    possible2.Name = "possible1";
+
+                    grdGame.Children.Add(possible2);
+
+                    possible2.Tapped += Brdr_Tapped;
+
+
+
+                }
+            }
+
 
 
         }
@@ -224,7 +253,7 @@ namespace Solitaire
 
             possible1.Tapped -= Brdr_Tapped;
             grid[toR1 + 1, toC1] = brdr;
-            //grid[toR1 + 2, toC1] = myEl;
+            grid[toR1 + 2, toC1] = myEl;
             grid[toR1, toC1] = brdr;
             
             //possible1.Background = new SolidColorBrush(Colors.White);
