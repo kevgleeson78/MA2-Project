@@ -154,7 +154,8 @@ namespace Solitaire
         }
         Ellipse moveMe;
         Border possible1, possible2, possible3, possible4;
-        int toR1, toC1;
+        int toR1, toC1,toR2,toC2,curRow,curCol,
+            adjRow1,adjRow2,adjCol1,adjCol2;
         private void myEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
              
@@ -163,26 +164,33 @@ namespace Solitaire
            
             Ellipse current = (Ellipse)sender;
             moveMe = current;
+            curRow = (int)moveMe.GetValue(Grid.RowProperty);
+            curCol = (int)moveMe.GetValue(Grid.ColumnProperty);
+            adjRow1 = (int)moveMe.GetValue(Grid.RowProperty) + 1;
+            adjRow2 = (int)moveMe.GetValue(Grid.RowProperty) - 1;
+            adjCol1 = (int)moveMe.GetValue(Grid.ColumnProperty) + 1;
+            adjCol2 = (int)moveMe.GetValue(Grid.ColumnProperty) - 1;
+            toR1 = (int)moveMe.GetValue(Grid.RowProperty)+2;
+           
+            toR2 = (int)moveMe.GetValue(Grid.RowProperty) -2;
+            toC1 = (int)moveMe.GetValue(Grid.ColumnProperty) - 2;
 
-            toR1 = (int)moveMe.GetValue(Grid.RowProperty);
-            Debug.WriteLine(current.Name);
-            toC1 = (int)moveMe.GetValue(Grid.ColumnProperty);
-            String removeMe = (toR1 + 1) + "_" + toC1;
+            toC2 = (int)moveMe.GetValue(Grid.ColumnProperty) + 2;
             //@todo set condition for the four possible moves
             //set boudries for edge of board.
 
             possible1 = new Border();
             //name for getting the position of the peices on the board.
 
-            if (toR1 + 2 < 7)
+            if (toR1 < 7)
             {
-                if (grid[toR1 + 2, toC1].Equals(brdr) && !grid[toR1 + 1, toC1].Equals(brdr))
+                if (grid[toR1, curCol].Equals(brdr) && !grid[toR1 - 1, curCol].Equals(brdr))
                 { ////grid = new UIElement[9, 9];
 
                     possible1.Background = new SolidColorBrush(Colors.Red);
 
-                    possible1.SetValue(Grid.RowProperty, toR1 + 2);
-                    possible1.SetValue(Grid.ColumnProperty, toC1);
+                    possible1.SetValue(Grid.RowProperty, toR1);
+                    possible1.SetValue(Grid.ColumnProperty, curCol);
                     possible1.HorizontalAlignment = HorizontalAlignment.Center;
                     possible1.VerticalAlignment = VerticalAlignment.Center;
                     //@todo set height and width of squares not hard coded.
@@ -198,7 +206,7 @@ namespace Solitaire
 
                 }
             }
-
+            /*
             possible2 = new Border();
             //name for getting the position of the peices on the board.
 
@@ -226,7 +234,7 @@ namespace Solitaire
 
                 }
             }
-
+            */
 
 
         }
@@ -237,14 +245,13 @@ namespace Solitaire
         {
             Border current = (Border)sender;
 
-            toR1 = (int)moveMe.GetValue(Grid.RowProperty);
-            toC1 = (int)moveMe.GetValue(Grid.ColumnProperty);
+           
 
             moveMe.SetValue(Grid.RowProperty, current.GetValue(Grid.RowProperty));
             moveMe.SetValue(Grid.ColumnProperty,current.GetValue(Grid.ColumnProperty));
             moveMe.Name = toR1 + 2 + "_" + toC1;
            
-            myEl = (Ellipse)grid[toR1 + 1, toC1];
+            myEl = (Ellipse)grid[adjRow1,curCol];
 
             grdPieces.Children.Remove(myEl);
 
@@ -252,9 +259,9 @@ namespace Solitaire
 
 
             possible1.Tapped -= Brdr_Tapped;
-            grid[toR1 + 1, toC1] = brdr;
-            grid[toR1 + 2, toC1] = myEl;
-            grid[toR1, toC1] = brdr;
+            grid[adjRow1, curCol] = brdr;
+            grid[toR1, curCol] = myEl;
+            grid[curRow, curCol] = brdr;
             
             //possible1.Background = new SolidColorBrush(Colors.White);
 
