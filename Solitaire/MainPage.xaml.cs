@@ -51,7 +51,7 @@ namespace Solitaire
             }
 
         }
-        Border brdr;
+        Border brdr, oob;
         //Adapted from https://github.com/dcMobileAppsDev/ClassContainers/blob/master/ClassContainers/MainPage.xaml.cs
         private void addBorders()
         {
@@ -64,6 +64,7 @@ namespace Solitaire
                 for (iC = 0; iC < 7; iC++)
                 {
                     brdr = new Border();
+                    oob = new Border();
                     //name for getting the position of the peices on the board.
                     brdr.Name = iR.ToString() + "_" + iC.ToString();
 
@@ -79,10 +80,7 @@ namespace Solitaire
                     //remove the squares that are not needed for the game
                     //colour these squares the same colour as the grid background
                     //@todo need to make these references in the grid non playable.
-                    if ((iR < 2&& iC < 2) || (iR < 2 && iC > 4) || (iR > 4 && iC < 2) || (iR > 4 && iC > 4))
-                    {
-                        brdr.Background = new SolidColorBrush(Colors.BurlyWood);
-                    }
+                    
                     brdr.SetValue(Grid.RowProperty, iR);
                     brdr.SetValue(Grid.ColumnProperty, iC);
                     brdr.HorizontalAlignment = HorizontalAlignment.Center;
@@ -93,7 +91,20 @@ namespace Solitaire
                     //add squares to the board.
 
                     grdGame.Children.Add(brdr);
+                    if ((iR < 2 && iC < 2) || (iR < 2 && iC > 4) || (iR > 4 && iC < 2) || (iR > 4 && iC > 4))
+                    {
+                        oob.Background = new SolidColorBrush(Colors.BurlyWood);
+                        oob.SetValue(Grid.RowProperty, iR);
+                        oob.SetValue(Grid.ColumnProperty, iC);
+                        oob.HorizontalAlignment = HorizontalAlignment.Center;
+                        oob.VerticalAlignment = VerticalAlignment.Center;
+                        //@todo set height and width of squares not hard coded.
+                        oob.Height = 100;
+                        oob.Width = 100;
+                        //add squares to the board.
 
+                        grdGame.Children.Add(oob);
+                    }
 
                 }
 
@@ -114,20 +125,20 @@ namespace Solitaire
             // loop rows 
             new UIElement[7, 7] {
 
-            {brdr,brdr,myEl,myEl,myEl,brdr,brdr},
-            {brdr,brdr,myEl,myEl,myEl,brdr,brdr},
+            {oob,oob,myEl,myEl,myEl,oob,oob},
+            {oob,oob,myEl,myEl,myEl,oob,oob},
             {myEl,myEl,myEl,myEl,myEl,myEl,myEl},
             {myEl,myEl,myEl,brdr,myEl,myEl,myEl},
             {myEl,myEl,myEl,myEl,myEl,myEl,myEl},
-            {brdr,brdr,myEl,brdr,myEl,brdr,brdr},
-            {brdr,brdr,myEl,myEl,myEl,brdr,brdr},
+            {oob,oob,myEl,myEl,myEl,oob,oob},
+            {oob,oob,myEl,myEl,myEl,oob,oob},
             };
 
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 7; j++)
                 {
-                    if (!grid[i, j].Equals(brdr))
+                    if (!grid[i, j].Equals(brdr)&&!grid[i,j].Equals(oob))
                     {
                         myEl = new Ellipse
                         {
@@ -161,9 +172,9 @@ namespace Solitaire
         //tapped event handler
         private void myEl_Tapped(object sender, TappedRoutedEventArgs e)
         {
-             
 
 
+            
            
             Ellipse current = (Ellipse)sender;
             //moveME used in the border tapped event handler to update the positon of the ellipse
@@ -185,38 +196,39 @@ namespace Solitaire
             //@todo set condition for the four possible moves
             //set boudries for edge of board.
 
-            
+
             //name for getting the position of the peices on the board.
-
-            if (twoSquaresDown < 7)
-            {
-                if (grid[twoSquaresDown, curCol].Equals(brdr) && !grid[oneSquareDown, curCol].Equals(brdr))
-                { ////grid = new UIElement[9, 9];
-                    possible1 = new Border();
-                    possible1.Background = new SolidColorBrush(Colors.Red);
-
-                    possible1.SetValue(Grid.RowProperty, twoSquaresDown);
-                    possible1.SetValue(Grid.ColumnProperty, curCol);
-                    possible1.HorizontalAlignment = HorizontalAlignment.Center;
-                    possible1.VerticalAlignment = VerticalAlignment.Center;
-                    //@todo set height and width of squares not hard coded.
-                    possible1.Height = 100;
-                    possible1.Width = 100;
-                    possible1.Name = "possible1";
-
-                    grdGame.Children.Add(possible1);
-
-                    possible1.Tapped += Brdr_Tapped;
-
-
-
-                }
-            }
             
-          
+                if (twoSquaresDown < 7)
+                {
+                    if (grid[twoSquaresDown, curCol].Equals(brdr) && !grid[oneSquareDown, curCol].Equals(brdr))
+                    { ////grid = new UIElement[9, 9];
+                        possible1 = new Border();
+
+                        possible1.Background = new SolidColorBrush(Colors.Red);
+
+                        possible1.SetValue(Grid.RowProperty, twoSquaresDown);
+                        possible1.SetValue(Grid.ColumnProperty, curCol);
+                        possible1.HorizontalAlignment = HorizontalAlignment.Center;
+                        possible1.VerticalAlignment = VerticalAlignment.Center;
+                        //@todo set height and width of squares not hard coded.
+                        possible1.Height = 100;
+                        possible1.Width = 100;
+                        possible1.Name = "possible1";
+
+                        grdGame.Children.Add(possible1);
+
+                        possible1.Tapped += Brdr_Tapped;
+
+
+
+                    }
+                }
+
+            
            
             //Condition for Boundry at top of board
-            if (twoSquaresUp > 0)
+            if (twoSquaresUp >= 0)
             {
                 // Condition for checking if the tapped ellipse has an ellipse above
                 // it and the following square above is empty in the array
@@ -243,7 +255,7 @@ namespace Solitaire
                     
                 }
             }
-            if (twoSquaresLeft > 0)
+            if (twoSquaresLeft >= 0)
             {
                 // Condition for checking if the tapped ellipse has an ellipse above
                 // it and the following square above is empty in the array
@@ -324,6 +336,7 @@ namespace Solitaire
                 grdGame.Children.Remove(possible1);
                 grdGame.Children.Remove(possible2);
                 grdGame.Children.Remove(possible3);
+                grdGame.Children.Remove(possible4);
                 //remove tapped handler
                 possible1.Tapped -= Brdr_Tapped;
                 //update the array
@@ -404,7 +417,7 @@ namespace Solitaire
 
                 for (int col = 0; col < colCount; col++)
                 {
-                    if (!grid[row, col].Equals(brdr))
+                    if (!grid[row, col].Equals(brdr) && !grid[row, col].Equals(oob))
                     {
                         myEl = new Ellipse
                         {
