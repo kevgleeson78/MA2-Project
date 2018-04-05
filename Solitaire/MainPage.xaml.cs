@@ -143,7 +143,7 @@ namespace Solitaire
                         myEl = new Ellipse
                         {
                             Fill = new SolidColorBrush(Colors.Silver),
-                            Name = i + "_" + j,
+                            Name = "current",
                             Tag = "peices",
                             Height = 50,
                             Width = 50
@@ -174,8 +174,11 @@ namespace Solitaire
         {
 
 
-            
-           
+            grdGame.Children.Remove(possible1);
+            grdGame.Children.Remove(possible2);
+            grdGame.Children.Remove(possible3);
+            grdGame.Children.Remove(possible4);
+
             Ellipse current = (Ellipse)sender;
             //moveME used in the border tapped event handler to update the positon of the ellipse
             moveMe = current;
@@ -217,16 +220,18 @@ namespace Solitaire
                         possible1.Name = "possible1";
 
                         grdGame.Children.Add(possible1);
-
+                        
                         possible1.Tapped += Brdr_Tapped;
 
 
 
                     }
-                }
+                
 
-            
+            }
            
+
+
             //Condition for Boundry at top of board
             if (twoSquaresUp >= 0)
             {
@@ -250,7 +255,7 @@ namespace Solitaire
                     possible2.Name = "possible2";
                     //add the red  border to the grid
                     grdGame.Children.Add(possible2);
-
+                   
                     possible2.Tapped += Brdr_Tapped;
                     
                 }
@@ -277,7 +282,7 @@ namespace Solitaire
                     possible3.Name = "possible3";
                     //add the red  border to the grid
                     grdGame.Children.Add(possible3);
-
+                    
                     possible3.Tapped += Brdr_Tapped;
 
                 }
@@ -304,7 +309,7 @@ namespace Solitaire
                     possible4.Name = "possible4";
                     //add the red  border to the grid
                     grdGame.Children.Add(possible4);
-
+                   
                     possible4.Tapped += Brdr_Tapped;
 
                 }
