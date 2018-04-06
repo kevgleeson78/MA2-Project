@@ -7,10 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="grdRoot"  Background="DarkBlue">
+    <Grid x:Name="grdRoot"  Background="Cornsilk">
 
 
-        <Grid x:Name="grdGame"  />
-        <Grid x:Name="grdPieces"   />
+        <Grid x:Name="grdGame"  MaxHeight="600" MaxWidth="600" Grid.Column="1"/>
+        <Grid x:Name="grdPieces" MaxHeight="600" MaxWidth="600" Grid.Column="1" />
+        <Button Content="Restart Game" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" Click="Button_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,57,0,0" Text="Score: 0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Height="40" x:Name="score"/>
     </Grid>
 </Page>
