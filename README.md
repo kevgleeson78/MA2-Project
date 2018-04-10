@@ -14,31 +14,31 @@ To finish the game you need to take one piece and jump over a neighbouring piece
 The game finishes when there are no neighbouring pieces left to jump over.
 THe object of winning the game is to have only one peice left and in the center square of the bord.
 
-##Setting the board up:
+## Setting the board up:
 
 
 
-##Setting the peices up:
+## Setting the peices up:
 
 
-##Choosing a peice to move:
+## Choosing a peice to move:
 
 
-##Highlighting possible moves:
-
-
-
-##Keping current tapped peice only:
+## Highlighting possible moves:
 
 
 
-
-##Taking a peice:
-
-##clearing the board after peice has been taken:
+## Keping current tapped peice only:
 
 
-##Displaying the score:
 
 
-##Resetting the game:
+## Taking a peice:
+
+## clearing the board after peice has been taken:
+
+
+## Displaying the score:
+
+
+## Resetting the game:
