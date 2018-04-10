@@ -57,6 +57,30 @@ The main page of the application only holds Three grids and a text block used as
                 grdGame.RowDefinitions.Add(new RowDefinition());
             }
 ```
+### Adding the squares to the game board.
+The game area is defined by asigning alternate Borders of Black and white as the games squares.
+```C#
+//iR set to 1 to center the board in front of the background
+            for (iR = 0; iR < 7; iR++)
+            {//iC set to 1 to center board
+                for (iC = 0; iC < 7; iC++)
+                {
+                    _brdr = new Border();
+                    _oob = new Border();
+                    //name for getting the position of the peices on the board.
+                    _brdr.Name = iR.ToString() + "_" + iC.ToString();
+
+                    //set default colour of border to balck
+                    _brdr.Background = new SolidColorBrush(Colors.Black);
+
+                    // if modulus of iR + iC is 0, then make the square white
+                    if ((iR + iC) % 2 == 0)
+                    {
+                        _brdr.Background = new SolidColorBrush(Colors.White);
+
+                    }
+```
+### The game boundries on the Board.
 
 
 ## Setting the peices up:
