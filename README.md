@@ -81,6 +81,24 @@ The game area is defined by asigning alternate Borders of Black and white as the
                     }
 ```
 ### The game boundries on the Board.
+Are set by the Border variable _oob to a different colour based on the four corners of the grid.
+
+```C#
+if ((iR < 2 && iC < 2) || (iR < 2 && iC > 4) || (iR > 4 && iC < 2) || (iR > 4 && iC > 4))
+                    {
+                        _oob.Background = new SolidColorBrush(Colors.BurlyWood);
+                        _oob.SetValue(Grid.RowProperty, iR);
+                        _oob.SetValue(Grid.ColumnProperty, iC);
+                        _oob.HorizontalAlignment = HorizontalAlignment.Center;
+                        _oob.VerticalAlignment = VerticalAlignment.Center;
+                        //@todo set height and width of squares not hard coded.
+                        _oob.Height = 100;
+                        _oob.Width = 100;
+                        //add squares to the board.
+
+                        grdGame.Children.Add(_oob);
+
+```
 
 
 ## Setting the peices up:
