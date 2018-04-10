@@ -12,7 +12,7 @@ Third year student at:[GMIT](http://gmit.ie) Galway
 Peg Solitaire is a game where there are 31 peices at the start of the game.
 To finish the game you need to take one piece and jump over a neighbouring piece that has has an empty square next to it.
 The game finishes when there are no neighbouring pieces left to jump over.
-THe object of winning the game is to have only one peice left and in the center square of the bord.
+THe object of winning the game is to have only one peice left and in the center square of the board.
 ## MainPage.xaml
 The main page of the application only holds Three grids and a text block used as place holders to hold the elements sreated on the c# side of the application.
 ```XAML
@@ -36,6 +36,14 @@ The main page of the application only holds Three grids and a text block used as
 </Page>
 
 ```
+
+* grdRoot is the main container and background.
+* grdGame is used to set up the board.
+* grdPieces is used to hold the peices of the game.
+* The button is used to restart the game.
+* The tex block is used to hold the user score as they take a new peice.
+
+
 ## Setting the board up:
 
 
