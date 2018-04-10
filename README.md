@@ -45,7 +45,18 @@ The main page of the application only holds Three grids and a text block used as
 
 
 ## Setting the board up:
+### Firstly rows and columns need to be added for each grid.
+```C#
+ for (int i = 0; i < 7; i++)
+            {
 
+                grdPieces.ColumnDefinitions.Add(new ColumnDefinition());
+                grdPieces.RowDefinitions.Add(new RowDefinition());
+
+                grdGame.ColumnDefinitions.Add(new ColumnDefinition());
+                grdGame.RowDefinitions.Add(new RowDefinition());
+            }
+```
 
 
 ## Setting the peices up:
