@@ -340,7 +340,9 @@ Then the array is repopulated
 
 ## Displaying the score:
 A textblock is used on the mainPAge.xaml to hold the user score on the game screen.
-
+```xaml
+ <TextBlock HorizontalAlignment="Left" Margin="10,57,0,0" Text="Score: 0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Height="40" x:Name="score"/>
+```
 After each jump the user makes the score increments by ten.
 
 The below global variable is used to hold the user score.
@@ -369,3 +371,19 @@ This method then binds the score to the textblock after each peice has been take
 
 
 ## Resetting the game:
+The game is reset via a button on the main page.
+```xaml
+<Button Content="Restart Game" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" Click="Button_Click"/>
+```
+* When the button is clicked it removes all peices from the grid.
+* Then adds the initial 2d array of peices back to the grid.
+* Then resets the score to 0.
+```C#
+ private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            grdPieces.Children.Clear();
+            addPieces();
+            updateScore(0);
+            _initScore = 0;
+        }
+`` 
