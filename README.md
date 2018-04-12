@@ -101,16 +101,150 @@ if ((iR < 2 && iC < 2) || (iR < 2 && iC > 4) || (iR > 4 && iC < 2) || (iR > 4 &&
 ```
 
 
-## Setting the peices up:
+## Setting the peices and board up:
+ A 2d array is used to arepresent the game board with pieces at the start of the game.
+ The grid grdPieces is then overlayed on the grdGAme grid holding borders.
+```C#
+ //pieces for the board
+        Ellipse _myEl;
+        //2d array to  hold peices and Borders
+        UIElement[,] _grid;
+        #region add pieces
+        //method to hold the initial board position of the pieces and borders.
+        private void addPieces()
+        {
+            _myEl = new Ellipse();
+
+            _grid = new UIElement[7, 7] {
+
+            {_oob,_oob,_myEl,_myEl,_myEl,_oob,_oob},
+            {_oob,_oob,_myEl,_myEl,_myEl,_oob,_oob},
+            {_myEl,_myEl,_myEl,_myEl,_myEl,_myEl,_myEl},
+            {_myEl,_myEl,_myEl,_brdr,_myEl,_myEl,_myEl},
+            {_myEl,_myEl,_myEl,_myEl,_myEl,_myEl,_myEl},
+            {_oob,_oob,_myEl,_myEl,_myEl,_oob,_oob},
+            {_oob,_oob,_myEl,_myEl,_myEl,_oob,_oob},
+            };
+
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    if (!_grid[i, j].Equals(_brdr) && !_grid[i, j].Equals(_oob))
+                    {
+                        _myEl = new Ellipse
+                        {
+                            Fill = new SolidColorBrush(Colors.Silver),
+                            Name = "current",
+                            Tag = "peices",
+                            Height = 40,
+                            Width = 40
+                        };
+                        _grid[i, j] = _myEl;
+
+                        _grid[i, j].SetValue(Grid.RowProperty, i);
+                        _grid[i, j].SetValue(Grid.ColumnProperty, j);
 
 
+
+                        grdPieces.Children.Add(_myEl);
+```
 ## Choosing a peice to move:
+When a piece is tapped it crestes an event handler.
+```C#
+ _myEl.Tapped += _myEl_Tapped;
+```
 
+The current ellipse tapped can then be accessed inside the tapped event handler method with.
+```C#
+Ellipse current = (Ellipse)sender;
+```
+This variable can then be used to get the current position of the ellipse on the gridRow and gridColumn.
+These coordinates map exactly to the 2d array so can be used to manipulate the array and grid.
 
+## Getting the values of all needed coordinates.
+Global variables are created for getting the positon 1 and 2 squares to the left, right, up and down from the current tapped ellipse.
+
+```C#
+int _twoSquaresDown, _twoSquaresLeft, _twoSquaresUp, _twoSquaresRight, _curRow, _curCol,
+            _oneSquareDown, _oneSquareUp, _oneSquarRight, _oneSquarLeft;
+```
+
+These are then set insde the tapped event handler method.
+
+```C#
+_curRow = (int)current.GetValue(Grid.RowProperty);
+            _curCol = (int)current.GetValue(Grid.ColumnProperty);
+            _oneSquareDown = (int)current.GetValue(Grid.RowProperty) + 1;
+            _oneSquareUp = (int)current.GetValue(Grid.RowProperty) - 1;
+            _oneSquarRight = (int)current.GetValue(Grid.ColumnProperty) + 1;
+            _oneSquarLeft = (int)current.GetValue(Grid.ColumnProperty) - 1;
+            _twoSquaresDown = (int)current.GetValue(Grid.RowProperty) + 2;
+
+            _twoSquaresUp = (int)current.GetValue(Grid.RowProperty) - 2;
+            _twoSquaresLeft = (int)current.GetValue(Grid.ColumnProperty) - 2;
+
+            _twoSquaresRight = (int)current.GetValue(Grid.ColumnProperty) + 2;
+```
+## Setting up boundaries of the board
+
+To prevent an out of bounds exception for each of the grids a condition needs to be set to check if the current positon + 1, current positon + 2 in all directions left, right, up and down are within the excepted bounds of the grid.
+```C#
+//set boudries for edge of board.
+
+            if (_twoSquaresDown < 7)
+            {
+```
+
+```C#
+//Condition for Boundry at top of board
+            if (_twoSquaresUp >= 0)
+            {
+```
 ## Highlighting possible moves:
 
+Firstly Global Border Variables are set to hold the four possible highlighted borders that may be used should the conditions arise.
+
+When an ellipse has been tapped and the above conditions are met the array is checked for ellipses and borders from the current position.
+
+In the below example we are checking in a downward direction.
+
+The condition is checking if the 2d array has an ellipse direclty below and a border below that again.
+
+If this has met these two conditions the border is coloured red.
+Then added to the grdGame grid.
+
+IF the border is tapped it triggers the event handler _brdr_Tapped.
+
+```C#
+ if (_twoSquaresDown < 7)
+            {
+                if (_grid[_twoSquaresDown, _curCol].Equals(_brdr) && !_grid[_oneSquareDown, _curCol].Equals(_brdr))
+                { ////_grid = new UIElement[9, 9];
+                    _possible1 = new Border();
+
+                    _possible1.Background = new SolidColorBrush(Colors.Red);
+
+                    _possible1.SetValue(Grid.RowProperty, _twoSquaresDown);
+                    _possible1.SetValue(Grid.ColumnProperty, _curCol);
+                    _possible1.HorizontalAlignment = HorizontalAlignment.Center;
+                    _possible1.VerticalAlignment = VerticalAlignment.Center;
+                    //@todo set height and width of squares not hard coded.
+                    _possible1.Height = 100;
+                    _possible1.Width = 100;
+                    _possible1.Name = "_possible1";
+
+                    grdGame.Children.Add(_possible1);
+
+                    _possible1.Tapped += _brdr_Tapped;
 
 
+
+                }
+
+
+            }
+```
 ## Keping current tapped peice only:
 
 
