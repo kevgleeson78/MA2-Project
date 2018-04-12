@@ -246,16 +246,108 @@ IF the border is tapped it triggers the event handler _brdr_Tapped.
             }
 ```
 ## Keping current tapped peice only:
+TO avoid highlighted borders being created after each tapped ellipse the borders have to be removed from the grid after a new tapped event has occured.
+This is place at the yop of the tapped event handler method so it is executed for each tapped ellipse.
 
-
+```C#
+            grdGame.Children.Remove(_possible1);
+            grdGame.Children.Remove(_possible2);
+            grdGame.Children.Remove(_possible3);
+            grdGame.Children.Remove(_possible4);
+```
 
 
 ## Taking a peice:
+Once  a highlighte Border has been tapped we get the current position of the border.
+
+```C#
+ private void _brdr_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Border current = (Border)sender;
+```
+Then set the global _moveMe ellipse to the value of the tapped border.
+
+```C#
+ //move the ellipse to the tapped border
+            _moveMe.SetValue(Grid.RowProperty, current.GetValue(Grid.RowProperty));
+            _moveMe.SetValue(Grid.ColumnProperty, current.GetValue(Grid.ColumnProperty));
+```
 
 ## Clearing the board after peice has been taken:
+* all peices need to be removed from the grid.
+* the jumped ellipse needs to removed from the grid.
+* all highlighted borders nedd to be removed.
+* the tapped handler needs to be removed.
+* the array needs to be updated.
+```C#
+   //GEt the name of the border that is tapped
+            if (current.Name == "_possible1")
+            {   //Clear the _grid of pieces
+                grdPieces.Children.Clear();
+                //set Ellipse to be removed from the array
+                _myEl = (Ellipse)_grid[_oneSquareDown, _curCol];
+                //remove the ellipse from the _grid
+                grdPieces.Children.Remove(_myEl);
+                //remove both highlighted squares
+                grdGame.Children.Remove(_possible1);
+                grdGame.Children.Remove(_possible2);
+                grdGame.Children.Remove(_possible3);
+                grdGame.Children.Remove(_possible4);
+                //remove tapped handler
+                _possible1.Tapped -= _brdr_Tapped;
+                //update the array
+                _grid[_oneSquareDown, _curCol] = _brdr;
+                _grid[_twoSquaresDown, _curCol] = _myEl;
+                _grid[_curRow, _curCol] = _brdr;
+            }
+```
 
+Then the array is repopulated
+```C#
+//Re-populate the _grid with the updated array
+
+            var rowCount = _grid.GetLength(0);
+            var colCount = _grid.GetLength(1);
+            for (int row = 0; row < rowCount; row++)
+            {
+
+                for (int col = 0; col < colCount; col++)
+                {
+                    if (!_grid[row, col].Equals(_brdr) && !_grid[row, col].Equals(_oob))
+                    {
+                        _myEl = new Ellipse
+                        {
+                            Fill = new SolidColorBrush(Colors.Silver),
+                            Name = row + "_" + col,
+                            Tag = "peices",
+                            Height = 40,
+                            Width = 40
+                        };
+                        _grid[row, col] = _myEl;
+
+                        _grid[row, col].SetValue(Grid.RowProperty, row);
+                        _grid[row, col].SetValue(Grid.ColumnProperty, col);
+
+
+
+                        grdPieces.Children.Add(_myEl);
+                        _myEl.Tapped += _myEl_Tapped;
+                    }
+
+                }
+            }
+```
 
 ## Displaying the score:
+A textblock is used on the mainPAge.xaml to hold the user score on the game screen.
+
+After each jump the user makes the score increments by ten.
+The below global variable is used to hold the user score.
+
+```C#
+int _initScore = 0;
+````
+
 
 
 ## Resetting the game:
