@@ -342,12 +342,30 @@ Then the array is repopulated
 A textblock is used on the mainPAge.xaml to hold the user score on the game screen.
 
 After each jump the user makes the score increments by ten.
+
 The below global variable is used to hold the user score.
 
 ```C#
 int _initScore = 0;
 ````
+A method updateScore is used at the end of the _brdr_tapped event handler to increment by ten once a highlighted border has been tapped (A peice has been taken)
 
+```C#
+ //update the score after each piece is taken
+            updateScore(_initScore += 10);
+``
+This method then binds the score to the textblock after each peice has been taken.
+
+```xaml
+ private void updateScore(int inScore)
+        {
+
+            score.Text = "Score: " + inScore.ToString();
+
+
+
+        }
+```
 
 
 ## Resetting the game:
