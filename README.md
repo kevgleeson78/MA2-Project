@@ -353,7 +353,7 @@ A method updateScore is used at the end of the _brdr_tapped event handler to inc
 ```C#
  //update the score after each piece is taken
             updateScore(_initScore += 10);
-``
+```
 This method then binds the score to the textblock after each peice has been taken.
 
 ```xaml
