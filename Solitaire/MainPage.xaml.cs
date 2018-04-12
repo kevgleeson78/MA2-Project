@@ -60,6 +60,7 @@ namespace Solitaire
 
         }
         #endregion
+        //_oob used for setting the boundries of the boards corners. 
         Border _brdr, _oob;
 
         #region add borders
@@ -124,10 +125,12 @@ namespace Solitaire
         #endregion
 
 
-
+        //pieces for the board
         Ellipse _myEl;
+        //2d array to  hold peices and Borders
         UIElement[,] _grid;
         #region add pieces
+        //method to hold the initial board position of the pieces and borders.
         private void addPieces()
         {
             _myEl = new Ellipse();
