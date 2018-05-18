@@ -559,7 +559,7 @@ namespace Solitaire
                     if (j+2 < 7)
                     {
                         // Condition for checking if the tapped ellipse has an ellipse above
-                        // it and the following square above is empty in the array
+                        // it and the following square above is empty in the array test
                         if (_grid[i, j+2].Equals(_brdr) && !_grid[i, j+1].Equals(_brdr) && !_grid[i, j].Equals(_brdr) && !_grid[i, j].Equals(_oob))
                         {
 
