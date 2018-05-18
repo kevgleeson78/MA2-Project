@@ -12,7 +12,7 @@
 
         <Grid x:Name="grdGame"  MaxHeight="600" MaxWidth="600" Grid.Column="1"/>
         <Grid x:Name="grdPieces" MaxHeight="600" MaxWidth="600" Grid.Column="1" />
-        <Button Content="Restart Game" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.Column="0" Click="Button_Click"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,57,0,0" Text="Score: 0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Height="40" x:Name="score"/>
+        <Button Width="300" Height="300" Content=" Game Over!!! Restart Game"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Click="Button_Click" x:Name="GameOverButton" Visibility="Visible" Background="#FFFF3F00" FontSize="20" BorderBrush="LightGray" />
+        <TextBlock FontSize="30" HorizontalAlignment="Left" Margin="10,57,0,0" Text="Score: 0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" Height="300" x:Name="score"/>
     </Grid>
 </Page>

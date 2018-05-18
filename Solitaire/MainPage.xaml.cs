@@ -476,6 +476,7 @@ namespace Solitaire
         #region clear game and update score
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            GameOverButton.Visibility = Visibility.Collapsed;
             grdPieces.Children.Clear();
             addPieces();
             updateScore(0);
@@ -484,16 +485,12 @@ namespace Solitaire
         //print out the score to the text block.
         private void updateScore(int inScore)
         {
-
             score.Text = "Score: " + inScore.ToString();
-
-
-
         }
         #endregion
         bool _up = false, _down = false, _left = false, _right = false;
         int _valid = 0;
-        int _invalid = 0;
+        
 
         private void checkGame()
         {
@@ -588,6 +585,8 @@ namespace Solitaire
             }
             if (_valid==0)
             {
+                GameOverButton.Visibility = Visibility.Visible;
+               
                 Debug.WriteLine("Games Over");
             }
         }
