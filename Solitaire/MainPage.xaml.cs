@@ -184,6 +184,8 @@ namespace Solitaire
         //Different possible moves to check for
         int _twoSquaresDown, _twoSquaresLeft, _twoSquaresUp, _twoSquaresRight, _curRow, _curCol,
             _oneSquareDown, _oneSquareUp, _oneSquarRight, _oneSquarLeft;
+       
+        
         //tapped event handler
         #region tapped event
         private void _myEl_Tapped(object sender, TappedRoutedEventArgs e)
@@ -222,6 +224,7 @@ namespace Solitaire
             {
                 if (_grid[_twoSquaresDown, _curCol].Equals(_brdr) && !_grid[_oneSquareDown, _curCol].Equals(_brdr))
                 { ////_grid = new UIElement[9, 9];
+                    
                     _possible1 = new Border();
 
                     _possible1.Background = new SolidColorBrush(Colors.Red);
@@ -242,6 +245,7 @@ namespace Solitaire
 
 
                 }
+                
 
 
             }
@@ -255,7 +259,7 @@ namespace Solitaire
                 // it and the following square above is empty in the array
                 if (_grid[_twoSquaresUp, _curCol].Equals(_brdr) && !_grid[_oneSquareUp, _curCol].Equals(_brdr))
                 {
-
+                    
                     _possible2 = new Border();
                     //set the border colour to red as an option to move to
                     _possible2.Background = new SolidColorBrush(Colors.Red);
@@ -465,7 +469,7 @@ namespace Solitaire
             }
             //update the score after each piece is taken
             updateScore(_initScore += 10);
-
+            checkGame();
         }
         #endregion
         //button control to clear the game and reset the pieces and score
@@ -487,6 +491,95 @@ namespace Solitaire
 
         }
         #endregion
+
+        private void checkGame()
+        {
+            bool _up = false, _down = false, _left = false, _right = false;
+            int rowLength = _grid.GetLength(0);
+            int colLength = _grid.GetLength(1);
+
+            for (int i = 0; i < rowLength; i++)
+            {
+                for (int j = 0; j < colLength; j++)
+                {
+
+                    if (i+2 < 7)
+                    {
+                        if (_grid[i+2, j].Equals(_brdr) && !_grid[i+1, j].Equals(_brdr) && !_grid[i , j].Equals(_brdr) && !_grid[i, j].Equals(_oob))
+                        { ////_grid = new UIElement[9, 9];
+
+
+                            _down = true;
+
+                        }
+                        else
+                        {
+                           _down = false;
+                        }
+
+
+
+                    }
+
+
+
+                    //Condition for Boundry at top of board
+                    if (i-2 >= 0)
+                    {
+                        // Condition for checking if the tapped ellipse has an ellipse above
+                        // it and the following square above is empty in the array
+                        if (_grid[i-2, j].Equals(_brdr) && !_grid[i-1, j].Equals(_brdr) && !_grid[i, j].Equals(_brdr) && !_grid[i, j].Equals(_oob))
+                        {
+                            _up = true;
+
+
+                        }
+                        else
+                        {
+                            _up = false;
+                        }
+                    }
+                    if (j-2 >= 0)
+                    {
+                        // Condition for checking if the tapped ellipse has an ellipse above
+                        // it and the following square above is empty in the array
+                        if (_grid[i, j - 2].Equals(_brdr) && !_grid[i, j - 1].Equals(_brdr) && !_grid[i, j].Equals(_brdr) && !_grid[i, j].Equals(_oob))
+                        {
+
+                            _left = true;
+
+                        }
+                        else
+                        {
+
+                            _left = false;
+                        }
+                        
+                    }
+                    if (j+2 < 7)
+                    {
+                        // Condition for checking if the tapped ellipse has an ellipse above
+                        // it and the following square above is empty in the array
+                        if (_grid[i, j+2].Equals(_brdr) && !_grid[i, j+1].Equals(_brdr) && !_grid[i, j].Equals(_brdr) && !_grid[i, j].Equals(_oob))
+                        {
+
+                            _right = true;
+                        }
+                        else
+                        {
+                            _right = false;
+                        }
+                       
+                        
+                       
+                    }
+
+                    Debug.WriteLine("Right => "+i+" "+j+" "+  _right + " Left => " + i + " " + j + " " + _left + " down => " + i + " " + j + " " + _down +" Up => " + i + " " + j + " " + _up);
+                }
+               
+            }
+            
+        }
     }
 
 
