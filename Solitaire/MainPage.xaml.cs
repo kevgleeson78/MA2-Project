@@ -491,13 +491,16 @@ namespace Solitaire
 
         }
         #endregion
+        bool _up = false, _down = false, _left = false, _right = false;
+        int _valid = 0;
+        int _invalid = 0;
 
         private void checkGame()
         {
-            bool _up = false, _down = false, _left = false, _right = false;
+            
             int rowLength = _grid.GetLength(0);
             int colLength = _grid.GetLength(1);
-
+            _valid -= _valid;
             for (int i = 0; i < rowLength; i++)
             {
                 for (int j = 0; j < colLength; j++)
@@ -510,7 +513,7 @@ namespace Solitaire
 
 
                             _down = true;
-
+                            
                         }
                         else
                         {
@@ -559,7 +562,7 @@ namespace Solitaire
                     if (j+2 < 7)
                     {
                         // Condition for checking if the tapped ellipse has an ellipse above
-                        // it and the following square above is empty in the array test
+                        // it and the following square above is empty in the array
                         if (_grid[i, j+2].Equals(_brdr) && !_grid[i, j+1].Equals(_brdr) && !_grid[i, j].Equals(_brdr) && !_grid[i, j].Equals(_oob))
                         {
 
@@ -573,12 +576,20 @@ namespace Solitaire
                         
                        
                     }
-
-                    Debug.WriteLine("Right => "+i+" "+j+" "+  _right + " Left => " + i + " " + j + " " + _left + " down => " + i + " " + j + " " + _down +" Up => " + i + " " + j + " " + _up);
+                    
+                    if(_right==true||_left==true||_up==true||_down==true)
+                    {
+                        _valid++;
+                        
+                    }
+                   
                 }
                
             }
-            
+            if (_valid==0)
+            {
+                Debug.WriteLine("Games Over");
+            }
         }
     }
 
